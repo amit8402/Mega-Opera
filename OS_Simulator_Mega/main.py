@@ -7,6 +7,8 @@ from tabs.memory_tab import MemoryTab
 from tabs.tools_tab import ToolsTab
 from tabs.cpu_tab import CPUTab
 from tabs.process_tab import ProcessTab
+from tabs.disk_tab import DiskTab
+
 from theme import theme_manager
 
 
@@ -25,38 +27,53 @@ class OSSimulatorApp:
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill="both", expand=True)
 
-        # Tabs
+        # Tabs (CREATE ALL TAB OBJECTS)
         self.rag_tab = RAGTab(self.notebook)
         self.memory_tab = MemoryTab(self.notebook)
         self.cpu_tab = CPUTab(self.notebook)
-        self.process_tab = ProcessTab(self.notebook)   # ✅ FIXED
+        self.process_tab = ProcessTab(self.notebook)
+        self.disk_tab = DiskTab(self.notebook)      # ✅ ADDED
         self.tools_tab = ToolsTab(self.notebook)
 
-        # Add Tabs
+        # Add Tabs to Notebook
         self.notebook.add(self.rag_tab.frame, text="Resource Graph")
         self.notebook.add(self.memory_tab.frame, text="Memory Manager")
         self.notebook.add(self.cpu_tab.frame, text="CPU Scheduling")
         self.notebook.add(self.process_tab.frame, text="Process State")
+        self.notebook.add(self.disk_tab.outer, text="Disk Scheduling")  # ✅ ADDED
         self.notebook.add(self.tools_tab.frame, text="Tools")
 
-        # Theme refresh
+        # Theme refresh hook
         theme_manager.refresh = self.refresh_theme
 
     def refresh_theme(self):
         theme = theme_manager.get()
         self.root.configure(bg=theme["bg"])
 
-        try: self.rag_tab.redraw()
-        except: pass
+        try:
+            self.rag_tab.redraw()
+        except:
+            pass
 
-        try: self.memory_tab.redraw()
-        except: pass
+        try:
+            self.memory_tab.redraw()
+        except:
+            pass
 
-        try: self.cpu_tab.reset()
-        except: pass
+        try:
+            self.cpu_tab.reset()
+        except:
+            pass
 
-        try: self.process_tab.redraw()
-        except: pass
+        try:
+            self.process_tab.redraw()
+        except:
+            pass
+        try:
+             self.disk_tab.redraw()
+        except:
+            pass
+
 
 
 def main():
